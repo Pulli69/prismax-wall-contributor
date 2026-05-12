@@ -59,7 +59,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 header{
   text-align:center;
   padding:.4rem 1rem .2rem;
-}position:relative;z-index:1}
+}
 .logo-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:0.4rem}
 .dot{width:8px;height:8px;border-radius:50%;background:#d6b36a;box-shadow:0 0 10px #d6b36a;animation:blink 2.4s ease-in-out infinite}
 .dot:last-child{animation-delay:.5s}
@@ -138,7 +138,7 @@ input::placeholder,textarea::placeholder{color:rgba(240,238,232,.18)}
 .feat-note .note-msg{font-family:'Caveat',cursive;font-size:.88rem;line-height:1.5;color:rgba(0,0,0,.58);word-break:break-word;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 
 /* ── WALL ── */
-..wall-wrap{
+.wall-wrap{
   max-width:1160px;
   margin:0 auto;
   padding:.5rem 2rem 4rem;
@@ -484,6 +484,64 @@ input::placeholder,textarea::placeholder{color:rgba(240,238,232,.18)}
 .hero-btn.primary{background:#d6b36a;color:#0b0b0d;border-color:#d6b36a}
 .hero-btn.primary:hover{background:#cfa15c;transform:translateY(-2px)}
 @keyframes heroFadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── PAGE 3: GALLERY (MEMORIES ONLY) ── */
+#page-gallery{
+  padding-top:3.8rem;
+  overflow-y:auto;
+  background:#1a1108;
+}
+#page-gallery header{
+  display:none;
+}
+#page-gallery .action-bar{
+  display:none;
+}
+#page-gallery .form-wrap{
+  display:none;
+}
+#page-gallery .welcome-note-wrapper{
+  display:none;
+}
+#page-gallery .sort-bar{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:1rem;
+  margin-bottom:1.5rem;
+  padding:1rem;
+  background:rgba(214,179,106,.05);
+  border-radius:12px;
+  flex-wrap:wrap;
+}
+#page-gallery .sort-label{
+  font-size:12px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:rgba(240,238,232,.4);
+  font-weight:500;
+}
+#page-gallery .sort-btn{
+  padding:8px 16px;
+  border-radius:8px;
+  border:.5px solid rgba(214,179,106,.25);
+  background:rgba(214,179,106,.08);
+  color:#d6b36a;
+  font-size:12px;
+  font-family:'DM Sans',sans-serif;
+  cursor:pointer;
+  transition:all .2s;
+}
+#page-gallery .sort-btn:hover{
+  background:rgba(214,179,106,.15);
+  border-color:rgba(214,179,106,.4);
+}
+#page-gallery .sort-btn.active{
+  background:#d6b36a;
+  color:#0b0b0d;
+  border-color:#d6b36a;
+  font-weight:600;
+}
 
 /* ── PAGE 2 REVEAL ── */
 #page-reveal{background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem;text-align:center;overflow:hidden;position:fixed;top:0;left:0;right:0;bottom:0;z-index:-1;opacity:0;visibility:hidden;transition:opacity .5s ease-out, visibility .5s ease-out;width:100%;height:100%}
@@ -1011,6 +1069,7 @@ input::placeholder,textarea::placeholder{color:rgba(240,238,232,.18)}
   </div>
   <div class="nav-links">
     <button class="nav-link" id="nav-wall"   onclick="goToWall()">📌 The Wall</button>
+    <button class="nav-link" id="nav-gallery" onclick="goToGallery()">🖼️ Memories</button>
     <button class="nav-link" id="nav-submit" onclick="goToSubmit()">✍️ Pin Memory</button>
   </div>
 </nav>
@@ -1035,8 +1094,8 @@ input::placeholder,textarea::placeholder{color:rgba(240,238,232,.18)}
     </div>
 
     <div class="hero-btns">
-      <button class="hero-btn primary" onclick="window.goToWall()">🚀 Enter the Wall</button>
-      <button class="hero-btn" onclick="showRandomMemory()">🎲 Browse Memories</button>
+      <button class="hero-btn primary" onclick="window.goToWall()"> Enter the Wall</button>
+      <button class="hero-btn" onclick="showRandomMemory()"> Browse Memories</button>
     </div>
   </div>
 </div>
@@ -1114,39 +1173,28 @@ input::placeholder,textarea::placeholder{color:rgba(240,238,232,.18)}
 
 <!-- ══ PAGE 1: WALL ══ -->
 <div id="page-wall" class="page">
-  <header>
-    <div class="logo-row">
-      <div class="dot"></div>
-      <span class="site-tag">Prisma X</span>
-      <div class="dot"></div>
+  <!-- WALL HERO -->
+  <div style="text-align:center;padding:6rem 1.5rem 2rem;position:relative;z-index:10;">
+    <p style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#d6b36a;margin-bottom:.6rem;font-family:'DM Sans',sans-serif;">Prisma X</p>
+    <h1 style="font-family:'Caveat',cursive;font-size:clamp(2.4rem,6vw,4rem);font-weight:700;background:linear-gradient(130deg,#f0eee8 0%,#d6b36a 55%,#e7c98f 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.5rem;line-height:1.1;">Memory Wall</h1>
+    <p style="font-size:14px;color:rgba(240,238,232,.45);max-width:340px;margin:0 auto 2rem;line-height:1.7;font-family:'DM Sans',sans-serif;">Leave your mark. Share your best Prisma X moment — it lives here forever.</p>
+
+    <!-- TAGS -->
+    <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:1.8rem;">
+      <button class="action-btn" id="filter-milestone" onclick="toggleFilter('milestone')">🏆 Milestone</button>
+      <button class="action-btn" id="filter-memories" onclick="toggleFilter('memories')">💭 Memories</button>
+      <button class="action-btn" id="filter-first-role" onclick="toggleFilter('first role')">⭐ First Role</button>
+      <button class="action-btn" id="filter-event" onclick="toggleFilter('event')">🎉 Event</button>
+      <button class="action-btn" id="filter-meme" onclick="toggleFilter('meme')">😂 Meme</button>
+      <button class="action-btn" onclick="showRandomMemory()">🎲 Random</button>
     </div>
-    <h1>Memory Wall</h1>
-    <p class="tagline">Leave your mark. Share your best Prisma X moment — it lives here forever.</p>
-  </header>
 
-  <div class="action-bar">
-    <button class="action-btn" onclick="showRandomMemory()">Random Memory</button>
-    <button class="action-btn" id="filter-milestone" onclick="toggleFilter('milestone')">Milestone</button>
-    <button class="action-btn" id="filter-memories" onclick="toggleFilter('memories')">Memories</button>
-    <button class="action-btn" id="filter-event" onclick="toggleFilter('event')">Event</button>
-    <button class="action-btn" id="filter-meme" onclick="toggleFilter('meme')">Meme</button>
-    <button class="action-btn" id="filter-first-role" onclick="toggleFilter('first role')">First Role</button>
-  </div>
-
-  <!-- PIN CTA -->
-  <div style="text-align:center;margin:-1rem 0 2rem">
-    <button class="action-btn" style="background:rgba(214,179,106,.12);border-color:rgba(214,179,106,.35);color:#d6b36a;padding:10px 24px;font-size:13px" onclick="goToSubmit()">✍️ Pin your memory</button>
-  </div>
-
-  <!-- WELCOME NOTE -->
-  <div class="welcome-note-wrapper">
-    <div class="welcome-note">
-      <div class="welcome-title">✨ Welcome to Prisma X</div>
-      <div class="welcome-text">
-        Every contributor leaves a mark here.<br>
-        Add your moment and become part of the story.
-      </div>
-      <button class="welcome-cta" onclick="goToSubmit()">✍️ Pin Your Memory</button>
+    <!-- WELCOME NOTE -->
+    <div style="max-width:400px;margin:0 auto 2rem;background:#ede6d8;border-radius:4px;padding:1.8rem 1.6rem;position:relative;box-shadow:0 12px 40px rgba(0,0,0,.35),0 0 30px rgba(214,179,106,.15);">
+      <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:56px;height:16px;background:rgba(214,179,106,.4);border-radius:2px;"></div>
+      <p style="font-family:'Caveat',cursive;font-size:1.5rem;font-weight:700;color:rgba(30,18,6,.85);margin-bottom:.6rem;">✨ Welcome</p>
+      <p style="font-family:'Caveat',cursive;font-size:1rem;line-height:1.7;color:rgba(30,18,6,.6);margin-bottom:1.2rem;">Every contributor leaves a mark here.<br>Add your moment and become part of the story.</p>
+      <button onclick="goToSubmit()" style="background:#d6b36a;color:#0b0b0d;border:none;border-radius:8px;padding:10px 22px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">✍️ Pin Your Memory</button>
     </div>
   </div>
 
@@ -1251,6 +1299,45 @@ input::placeholder,textarea::placeholder{color:rgba(240,238,232,.18)}
         <button class="pin-btn" id="pin-btn" onclick="submitNote()">📌 Pin to the wall</button>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ══ PAGE 4: GALLERY (MEMORIES ONLY) ══ -->
+<div id="page-gallery" class="page">
+  <div class="wall-wrap" style="padding-top:1.5rem">
+    <div class="wall-top">
+      <span class="wall-heading">📌 Memory Gallery</span>
+      <span class="mem-count-paper"><span class="mem-count" id="mem-count-gal">loading...</span></span>
+    </div>
+
+    <!-- SORT BAR -->
+    <div class="sort-bar">
+      <span class="sort-label">Sort</span>
+      <button class="sort-btn active" id="sort-newest-gal" onclick="setSort('newest')">
+        <span class="sort-icon">🕐</span> Newest
+      </button>
+      <button class="sort-btn" id="sort-reacted-gal" onclick="setSort('reacted')">
+        <span class="sort-icon">🔥</span> Most Reacted
+      </button>
+      <button class="sort-btn" id="sort-viewed-gal" onclick="setSort('viewed')">
+        <span class="sort-icon">👁</span> Most Viewed
+      </button>
+    </div>
+
+    <!-- BOARD WITH NOTES -->
+    <div class="board">
+      <svg id="thread-svg-gal"></svg>
+      <div class="notes-grid" id="notes-grid-gal"></div>
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="pagination" id="pagination-gal" style="display:none">
+      <button class="page-btn" id="prev-btn-gal" onclick="previousPage()">← Previous</button>
+      <span class="page-info"><span id="page-num-gal">1</span> / <span id="pages-total-gal">1</span></span>
+      <button class="page-btn" id="next-btn-gal" onclick="nextPage()">Next →</button>
+    </div>
+
+    <div class="loading-msg" id="loading-msg-gal" style="display:none">Loading memories...</div>
   </div>
 </div>
 
@@ -2049,7 +2136,7 @@ function showReveal(name, msg, color, img){
 
 /* ══ NAV ── */
 /* ══ NAV SYSTEM ══ */
-const PAGES = ["page-intro","page-wall","page-submit","page-reveal"];
+const PAGES = ["page-intro","page-wall","page-gallery","page-submit","page-reveal"];
 
 function showPage(id){
   // stop thread sway when leaving wall
@@ -2083,16 +2170,39 @@ function showPage(id){
   
   // update active nav link
   document.querySelectorAll(".nav-link").forEach(l=>l.classList.remove("active"));
-  if(id==="page-wall")   { const l=document.getElementById("nav-wall");   if(l)l.classList.add("active"); }
+  if(id==="page-wall")     { const l=document.getElementById("nav-wall");   if(l)l.classList.add("active"); }
+  if(id==="page-gallery")  { const l=document.getElementById("nav-gallery"); if(l)l.classList.add("active"); }
+  if(id==="page-submit")   { const l=document.getElementById("nav-submit");  if(l)l.classList.add("active"); }
   if(id==="page-submit") { const l=document.getElementById("nav-submit"); if(l)l.classList.add("active"); }
   
   // show/hide floating CTA (only on wall)
   const floatingCta = document.getElementById("floating-cta");
-  if(floatingCta) floatingCta.classList.toggle("show", id==="page-wall");
+  if(floatingCta) floatingCta.classList.toggle("show", id==="page-wall" || id==="page-gallery");
 }
 
 window.goToIntro = function(){
   showPage("page-intro");
+};
+
+window.goToGallery = function(){
+  showPage("page-gallery");
+  if(typeof window.renderNotes === "function") {
+    window.renderNotes(false);
+    // After a brief delay, copy notes from wall to gallery
+    setTimeout(function(){
+      const wallGrid = document.getElementById("grid");
+      const galleryGrid = document.getElementById("notes-grid-gal");
+      if(wallGrid && galleryGrid){
+        galleryGrid.innerHTML = wallGrid.innerHTML;
+        // Copy memory count
+        const wallCount = document.getElementById("mem-count");
+        const galleryCount = document.getElementById("mem-count-gal");
+        if(wallCount && galleryCount){
+          galleryCount.textContent = wallCount.textContent;
+        }
+      }
+    }, 100);
+  }
 };
 
 window.goToWall = function(){
